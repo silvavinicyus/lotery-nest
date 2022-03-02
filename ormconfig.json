@@ -1,0 +1,15 @@
+{
+  "type": "postgres",
+  "port": 5432,
+  "host": "localhost",
+  "username": "lotery",
+  "password": "lotery",
+  "database": "lotery",
+  "entities": [
+    "dist/**/*.model.js"
+  ],
+  "migrations": ["dist/database/migrations/*.js"],
+  "cli": {
+      "migrationsDir": "./src/database/migrations"
+  }
+}
