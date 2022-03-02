@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CreateUserDTO from './dto/CreateUserDTO';
@@ -28,5 +28,17 @@ export class UserService {
     const users = await this.usersRepository.find();
 
     return users;
+  }
+
+  async show(id: number) {
+    const user = await this.usersRepository.findOne({ id });
+
+    return user;
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.usersRepository.findOne({ email });
+
+    return user;
   }
 }

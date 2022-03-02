@@ -19,6 +19,7 @@ scalar DateTime
 
 type Query {
   users: [UserModel!]!
+  user(id: Float!): UserModel!
 }
 
 type Mutation {
