@@ -47,12 +47,14 @@ export class UsersResolver {
     const secure_id = uuidV4();
     const passwordHash = await hash(password, 10);
 
-    return await this.usersService.create({
+    const user = await this.usersService.create({
       name,
       email,
       password: passwordHash,
       secure_id,
     });
+
+    return user;
   }
 
   @Mutation(() => String)
