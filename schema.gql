@@ -24,4 +24,6 @@ type Query {
 
 type Mutation {
   createUser(name: String!, email: String!, password: String!): UserModel!
+  deleteUser(secure_id: String!): String!
+  updateUser(secure_id: String!, email: String!, name: String!): UserModel!
 }

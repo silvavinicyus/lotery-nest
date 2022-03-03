@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserModule } from './users/users.module';
+import { PermissionsModule } from './permissions/permissions.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UserModule } from './users/users.module';
       driver: ApolloDriver,
     }),
     TypeOrmModule.forRoot(),
+    PermissionsModule,
     UserModule,
   ],
   controllers: [AppController],
