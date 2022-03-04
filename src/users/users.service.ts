@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PermissionModel } from 'src/permissions/permissions.model';
 import { Repository } from 'typeorm';
 import CreateUserDTO from './dto/CreateUserDTO';
 import UpdateUserDTO from './dto/UpdateUserDTO';
@@ -26,13 +27,20 @@ export class UserService {
   }
 
   async index() {
-    const users = await this.usersRepository.find();
+    const users = await this.usersRepository.find({
+      relations: ['authorizations', 'authorizations.permission'],
+    });
 
     return users;
   }
 
   async show(id: number) {
-    const user = await this.usersRepository.findOne({ id });
+    const user = await this.usersRepository.findOne({
+      relations: ['authorizations', 'authorizations.permission'],
+      where: {
+        id,
+      },
+    });
 
     return user;
   }

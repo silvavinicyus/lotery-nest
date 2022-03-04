@@ -2,12 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UserModel {
+type PermissionModel {
   id: Float!
   secure_id: String!
-  name: String!
-  email: String!
-  password: String!
+  type: String!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -17,14 +15,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type PermissionModel {
-  id: Float!
-  secure_id: String!
-  type: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
 type AuthorizationModel {
   id: Float!
   secure_id: String!
@@ -32,6 +22,19 @@ type AuthorizationModel {
   permission_id: Float!
   created_at: DateTime!
   updated_at: DateTime!
+  user: UserModel!
+  permission: PermissionModel!
+}
+
+type UserModel {
+  id: Float!
+  secure_id: String!
+  name: String!
+  email: String!
+  password: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  authorizations: [AuthorizationModel!]!
 }
 
 type Query {

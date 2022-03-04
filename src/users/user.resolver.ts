@@ -9,10 +9,17 @@ import { UserModel } from './user.model';
 import { UserService } from './users.service';
 import { v4 as uuidV4 } from 'uuid';
 import { hash } from 'bcrypt';
+import { PermissionsService } from 'src/permissions/permissions.service';
+import { AuthorizationService } from 'src/authorization/authorization.service';
 
 @Resolver('UserModel')
 export class UsersResolver {
-  constructor(@Inject(UserService) private usersService: UserService) {}
+  constructor(
+    @Inject(UserService) private usersService: UserService,
+    @Inject(PermissionsService) private permissionsService: PermissionsService,
+    @Inject(AuthorizationService)
+    private authorizationService: AuthorizationService,
+  ) {}
 
   @Query(() => [UserModel])
   async users(): Promise<UserModel[]> {
@@ -52,6 +59,14 @@ export class UsersResolver {
       email,
       password: passwordHash,
       secure_id,
+    });
+    console.log(user.id);
+
+    const permission = await this.permissionsService.findByType('player');
+
+    await this.authorizationService.create({
+      user_id: user.id,
+      permission_id: permission.id,
     });
 
     return user;

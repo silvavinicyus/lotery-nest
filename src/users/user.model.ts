@@ -1,9 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { AuthorizationModel } from 'src/authorization/authorization.model';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -11,7 +16,7 @@ import {
 @Entity('users')
 export class UserModel {
   @Field()
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Field()
@@ -37,4 +42,9 @@ export class UserModel {
   @Field()
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Field(() => [AuthorizationModel], {})
+  @OneToMany(() => AuthorizationModel, (auth) => auth.user)
+  @JoinColumn({ name: 'user_id' })
+  authorizations: AuthorizationModel[];
 }

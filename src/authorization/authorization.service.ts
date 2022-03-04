@@ -47,13 +47,18 @@ export class AuthorizationService {
   }
 
   async index() {
-    const authorizations = await this.authorizationsRepository.find();
+    const authorizations = await this.authorizationsRepository.find({
+      relations: ['user', 'permission'],
+    });
 
     return authorizations;
   }
 
   async show(id: number) {
-    const authorization = await this.authorizationsRepository.findOne({ id });
+    const authorization = await this.authorizationsRepository.findOne({
+      relations: ['user', 'permission'],
+      where: { id },
+    });
 
     if (!authorization) {
       throw new NotFoundException(
@@ -70,7 +75,8 @@ export class AuthorizationService {
 
   async findBySecureId(secure_id: string) {
     const authorization = await this.authorizationsRepository.findOne({
-      secure_id,
+      relations: ['user', 'permission'],
+      where: { secure_id },
     });
 
     return authorization;

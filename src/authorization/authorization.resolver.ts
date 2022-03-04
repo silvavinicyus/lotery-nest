@@ -1,6 +1,5 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
-import { Arg } from 'type-graphql';
 import { AuthorizationModel } from './authorization.model';
 import { AuthorizationService } from './authorization.service';
 
