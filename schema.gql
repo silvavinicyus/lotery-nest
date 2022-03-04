@@ -25,11 +25,22 @@ type PermissionModel {
   updated_at: DateTime!
 }
 
+type AuthorizationModel {
+  id: Float!
+  secure_id: String!
+  user_id: Float!
+  permission_id: Float!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
   permissions: [PermissionModel!]!
   permission(id: Float!): PermissionModel!
   users: [UserModel!]!
   user(id: Float!): UserModel!
+  authorizations: [AuthorizationModel!]!
+  authorization(id: Float!): AuthorizationModel!
 }
 
 type Mutation {
@@ -39,4 +50,6 @@ type Mutation {
   createUser(name: String!, email: String!, password: String!): UserModel!
   deleteUser(secure_id: String!): String!
   updateUser(secure_id: String!, email: String!, name: String!): UserModel!
+  createAuthorization(user_id: Float!, permission_id: Float!): AuthorizationModel!
+  deleteAuthorization(secure_id: String!): String!
 }
