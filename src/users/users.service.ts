@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PermissionModel } from 'src/permissions/permissions.model';
 import { Repository } from 'typeorm';
 import CreateUserDTO from './dto/CreateUserDTO';
 import UpdateUserDTO from './dto/UpdateUserDTO';

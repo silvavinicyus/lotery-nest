@@ -7,6 +7,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserModule } from './users/users.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { AuthorizationModule } from './authorization/authorization.module';
+import { GamesModule } from './games/games.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthorizationModule } from './authorization/authorization.module';
     PermissionsModule,
     UserModule,
     AuthorizationModule,
+    GamesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

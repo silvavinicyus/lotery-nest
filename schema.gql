@@ -37,6 +37,19 @@ type UserModel {
   authorizations: [AuthorizationModel!]!
 }
 
+type GameModel {
+  id: Float!
+  secure_id: String!
+  type: String!
+  description: String!
+  range: Float!
+  price: Float!
+  max_number: Float!
+  color: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
   permissions: [PermissionModel!]!
   permission(id: Float!): PermissionModel!
@@ -44,6 +57,8 @@ type Query {
   user(id: Float!): UserModel!
   authorizations: [AuthorizationModel!]!
   authorization(id: Float!): AuthorizationModel!
+  games: [GameModel!]!
+  game(id: Float!): GameModel!
 }
 
 type Mutation {
@@ -55,4 +70,7 @@ type Mutation {
   updateUser(secure_id: String!, email: String!, name: String!): UserModel!
   createAuthorization(user_id: Float!, permission_id: Float!): AuthorizationModel!
   deleteAuthorization(secure_id: String!): String!
+  createGame(type: String!, description: String!, range: Float!, price: Float!, max_number: Float!, color: String!): GameModel!
+  deleteGame(secure_id: String!): String!
+  updateGame(secure_id: String!, description: String!, range: Float!, price: Float!, color: String!): GameModel!
 }
