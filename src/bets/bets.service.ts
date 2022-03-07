@@ -1,11 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { GameModel } from 'src/games/games.model';
-import { UserModel } from 'src/users/user.model';
 import { Repository } from 'typeorm';
+import { v4 as uuidV4 } from 'uuid';
 import { BetModel } from './bets.model';
 import CreateBetDTO from './dto/CreateBetDTO';
-import { v4 as uuidV4 } from 'uuid';
 
 @Injectable()
 export class BetsService {
