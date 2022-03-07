@@ -7,9 +7,15 @@ import { BetsService } from './bets.service';
 import { BetsResolver } from './bets.resolver';
 import { GamesModule } from 'src/games/games.module';
 import { UserModule } from 'src/users/users.module';
+import { CartModule } from 'src/cart/cart.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BetModel]), GamesModule, UserModule],
+  imports: [
+    TypeOrmModule.forFeature([BetModel]),
+    GamesModule,
+    UserModule,
+    CartModule,
+  ],
   providers: [BetsService, BetsResolver],
   exports: [BetsService],
 })

@@ -1,9 +1,11 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CartService } from 'src/cart/cart.service';
 import { GamesService } from 'src/games/games.service';
 import { UserService } from 'src/users/users.service';
 import { BetModel } from './bets.model';
 import { BetsService } from './bets.service';
+import { ICreateBetRequest } from './dto/ICreateBetRequestDTO';
 
 @Resolver('bets')
 export class BetsResolver {
@@ -14,6 +16,8 @@ export class BetsResolver {
     private gamesService: GamesService,
     @Inject(UserService)
     private usersService: UserService,
+    @Inject(CartService)
+    private cartService: CartService,
   ) {}
 
   @Query(() => [BetModel])
@@ -30,27 +34,41 @@ export class BetsResolver {
     return bet;
   }
 
-  @Mutation(() => BetModel)
-  async createBet(
-    @Args('game_id') game_id: number,
-    @Args('user_id') user_id: number,
-    @Args('numbers') numbers: string,
-  ) {
-    const gameExists = await this.gamesService.show(game_id);
+  @Mutation(() => [BetModel])
+  async createBet(@Args('data') data: ICreateBetRequest): Promise<BetModel[]> {
+    const betsCreated: BetModel[] = [];
 
-    if (!gameExists) {
-      throw new NotFoundException('There is no game with the given id');
+    let totalValue = 0;
+
+    for await (const bet of data.bets) {
+      const { price } = await this.gamesService.show(bet.game_id);
+      totalValue += price;
     }
 
-    const userExists = await this.usersService.show(user_id);
+    const cart = await this.cartService.show();
 
-    if (!userExists) {
-      throw new NotFoundException('There is no user with the given id');
+    if (totalValue >= cart.value) {
+      for await (const bet of data.bets) {
+        const gameExists = await this.gamesService.show(bet.game_id);
+
+        if (!gameExists) {
+          throw new NotFoundException('There is no game with the given id');
+        }
+
+        const userExists = await this.usersService.show(bet.user_id);
+
+        if (!userExists) {
+          throw new NotFoundException('There is no user with the given id');
+        }
+        const betCreated = await this.betsService.create(bet);
+
+        betsCreated.push(betCreated);
+      }
+    } else {
+      throw new BadRequestException(`Cart value must be minimum ${cart.value}`);
     }
 
-    const bet = await this.betsService.create({ game_id, numbers, user_id });
-
-    return bet;
+    return betsCreated;
   }
 
   @Mutation(() => String)

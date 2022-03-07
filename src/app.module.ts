@@ -9,6 +9,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { GamesModule } from './games/games.module';
 import { BetsModule } from './bets/bets.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BetsModule } from './bets/bets.module';
     AuthorizationModule,
     GamesModule,
     BetsModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -62,6 +62,13 @@ type BetModel {
   game: GameModel!
 }
 
+type CartModel {
+  id: Float!
+  value: Float!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
   permissions: [PermissionModel!]!
   permission(id: Float!): PermissionModel!
@@ -73,6 +80,7 @@ type Query {
   game(id: Float!): GameModel!
   bets: [BetModel!]!
   bet(id: Float!): BetModel!
+  cart: CartModel!
 }
 
 type Mutation {
@@ -87,6 +95,17 @@ type Mutation {
   createGame(type: String!, description: String!, range: Float!, price: Float!, max_number: Float!, color: String!): GameModel!
   deleteGame(secure_id: String!): String!
   updateGame(secure_id: String!, description: String!, range: Float!, price: Float!, color: String!): GameModel!
-  createBet(game_id: Float!, user_id: Float!, numbers: String!): BetModel!
+  createBet(data: ICreateBetRequest!): [BetModel!]!
   deleteBet(secure_id: String!): String!
+  updateCart(value: Float!): CartModel!
+}
+
+input ICreateBetRequest {
+  bets: [IBetInterface!]!
+}
+
+input IBetInterface {
+  game_id: Float!
+  user_id: Float!
+  numbers: String!
 }
