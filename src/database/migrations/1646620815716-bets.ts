@@ -15,6 +15,10 @@ export class bets1646620815716 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
+            name: 'secure_id',
+            type: 'uuid',
+          },
+          {
             name: 'game_id',
             type: 'integer',
           },
