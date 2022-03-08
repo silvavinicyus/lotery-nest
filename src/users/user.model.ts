@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, HideField, ObjectType } from '@nestjs/graphql';
 import { AuthorizationModel } from 'src/authorization/authorization.model';
 import {
   Column,
@@ -29,7 +29,7 @@ export class UserModel {
   @Column({ nullable: false, unique: true })
   email: string;
 
-  @Field()
+  @HideField()
   @Column({ nullable: false })
   password: string;
 
