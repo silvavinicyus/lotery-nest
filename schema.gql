@@ -2,12 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UserModel {
+type PermissionModel {
   id: Float!
   secure_id: String!
-  name: String!
-  email: String!
-  password: String!
+  type: String!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -17,10 +15,141 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type AuthorizationModel {
+  id: Float!
+  secure_id: String!
+  user_id: Float!
+  permission_id: Float!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: UserModel!
+  permission: PermissionModel!
+}
+
+type UserModel {
+  id: Float!
+  secure_id: String!
+  name: String!
+  email: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  authorizations: [AuthorizationModel!]!
+}
+
+type GameModel {
+  id: Float!
+  secure_id: String!
+  type: String!
+  description: String!
+  range: Float!
+  price: Float!
+  max_number: Float!
+  color: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type CartModel {
+  id: Float!
+  value: Float!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type BetModel {
+  id: Float!
+  secure_id: String!
+  user_id: Float!
+  game_id: Float!
+  numbers: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: UserModel!
+  game: GameModel!
+}
+
+type AuthType {
+  user: UserModel!
+  token: String!
+}
+
 type Query {
+  permissions: [PermissionModel!]!
+  permission(id: Float!): PermissionModel!
   users: [UserModel!]!
+  user(id: Float!): UserModel!
+  authorizations: [AuthorizationModel!]!
+  authorization(id: Float!): AuthorizationModel!
+  games: [GameModel!]!
+  game(id: Float!): GameModel!
+  bets: [BetModel!]!
+  bet(id: Float!): BetModel!
+  cart: CartModel!
 }
 
 type Mutation {
-  createUser(name: String!, email: String!, password: String!): UserModel!
+  createPermission(type: String!): PermissionModel!
+  deletePermission(secure_id: String!): String!
+  updatePermission(secure_id: String!, type: String!): PermissionModel!
+  createUser(input: CreateUserDTO!): UserModel!
+  deleteUser(secure_id: String!): String!
+  updateUser(input: UpdateUserDTO!): UserModel!
+  createAuthorization(input: CreateAuthorizationDTO!): AuthorizationModel!
+  deleteAuthorization(secure_id: String!): String!
+  createGame(input: CreateGameDTO!): GameModel!
+  deleteGame(secure_id: String!): String!
+  updateGame(input: UpdateGameDTO!): GameModel!
+  createBet(data: ICreateBetRequest!): [BetModel!]!
+  deleteBet(secure_id: String!): String!
+  updateCart(value: Float!): CartModel!
+  login(data: AuthenticateDTO!): AuthType!
+}
+
+input CreateUserDTO {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUserDTO {
+  secure_id: String!
+  email: String!
+  name: String!
+}
+
+input CreateAuthorizationDTO {
+  user_id: Float!
+  permission_id: Float!
+}
+
+input CreateGameDTO {
+  type: String!
+  description: String!
+  range: Float!
+  price: Float!
+  max_number: Float!
+  color: String!
+}
+
+input UpdateGameDTO {
+  secure_id: String!
+  price: Float!
+  range: Float!
+  description: String!
+  color: String!
+}
+
+input ICreateBetRequest {
+  bets: [IBetInterface!]!
+}
+
+input IBetInterface {
+  game_id: Float!
+  user_id: Float!
+  numbers: String!
+}
+
+input AuthenticateDTO {
+  email: String!
+  password: String!
 }
