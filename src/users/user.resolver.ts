@@ -13,6 +13,7 @@ import { hash } from 'bcrypt';
 import { PermissionsService } from 'src/permissions/permissions.service';
 import { AuthorizationService } from 'src/authorization/authorization.service';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
+import { IsAdmin } from 'src/auth/admin.guard';
 
 @Resolver('UserModel')
 export class UsersResolver {
@@ -23,7 +24,7 @@ export class UsersResolver {
     private authorizationService: AuthorizationService,
   ) {}
 
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(GqlAuthGuard, IsAdmin)
   @Query(() => [UserModel])
   async users(): Promise<UserModel[]> {
     const users = await this.usersService.index();

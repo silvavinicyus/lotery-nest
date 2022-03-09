@@ -14,7 +14,7 @@ import { UserModule } from 'src/users/users.module';
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
         signOptions: {
-          expiresIn: '30s',
+          expiresIn: '1h',
         },
       }),
     }),
