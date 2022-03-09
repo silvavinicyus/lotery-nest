@@ -1,8 +1,15 @@
-import { ConflictException, Inject, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { GameModel } from './games.model';
 import { GamesService } from './games.service';
 import { v4 as uuidV4 } from 'uuid';
+import { GqlAuthGuard } from 'src/auth/auth.guard';
+import { IsAdmin } from 'src/auth/admin.guard';
 
 @Resolver('GameModel')
 export class GamesResolver {
@@ -25,6 +32,7 @@ export class GamesResolver {
     return gameExists;
   }
 
+  @UseGuards(GqlAuthGuard, IsAdmin)
   @Mutation(() => GameModel)
   async createGame(
     @Args('type') type: string,
@@ -55,6 +63,7 @@ export class GamesResolver {
     return game;
   }
 
+  @UseGuards(GqlAuthGuard, IsAdmin)
   @Mutation(() => String)
   async deleteGame(@Args('secure_id') secure_id: string): Promise<string> {
     const gameExists = await this.gamesService.findBySecureId(secure_id);
@@ -67,7 +76,8 @@ export class GamesResolver {
 
     return 'deleted';
   }
-  //secure_id, price, range, description, color
+
+  @UseGuards(GqlAuthGuard, IsAdmin)
   @Mutation(() => GameModel)
   async updateGame(
     @Args('secure_id') secure_id: string,

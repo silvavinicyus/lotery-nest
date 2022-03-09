@@ -1,5 +1,7 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { Inject, NotFoundException, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { IsAdmin } from 'src/auth/admin.guard';
+import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { AuthorizationModel } from './authorization.model';
 import { AuthorizationService } from './authorization.service';
 
@@ -10,6 +12,7 @@ export class AuthorizationResolver {
     private authorizationService: AuthorizationService,
   ) {}
 
+  @UseGuards(GqlAuthGuard, IsAdmin)
   @Query(() => [AuthorizationModel])
   async authorizations(): Promise<AuthorizationModel[]> {
     const authorizations = this.authorizationService.index();
@@ -17,6 +20,7 @@ export class AuthorizationResolver {
     return authorizations;
   }
 
+  @UseGuards(GqlAuthGuard, IsAdmin)
   @Query(() => AuthorizationModel)
   async authorization(@Args('id') id: number): Promise<AuthorizationModel> {
     const authorization = await this.authorizationService.show(id);
@@ -37,6 +41,7 @@ export class AuthorizationResolver {
     return authorization;
   }
 
+  @UseGuards(GqlAuthGuard, IsAdmin)
   @Mutation(() => String)
   async deleteAuthorization(
     @Args('secure_id') secure_id: string,

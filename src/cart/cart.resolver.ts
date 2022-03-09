@@ -1,5 +1,7 @@
-import { Inject } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { IsAdmin } from 'src/auth/admin.guard';
+import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { CartModel } from './cart.model';
 import { CartService } from './cart.service';
 
@@ -14,6 +16,7 @@ export class CartResolver {
     return cart;
   }
 
+  @UseGuards(GqlAuthGuard, IsAdmin)
   @Mutation(() => CartModel)
   async updateCart(@Args('value') value: number) {
     const cart = await this.cartService.update(value);
