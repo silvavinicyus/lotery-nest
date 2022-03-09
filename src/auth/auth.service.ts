@@ -44,12 +44,7 @@ export class AuthService {
   private async jwtToken(user: UserModel): Promise<string> {
     const payload = {
       id: user.id,
-      secure_id: user.secure_id,
       name: user.name,
-      email: user.email,
-      permissions: user.authorizations,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
     };
 
     return this.jwtService.signAsync(payload);

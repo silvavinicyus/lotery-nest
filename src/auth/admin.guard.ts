@@ -2,11 +2,14 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  Inject,
   Injectable,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Observable } from 'rxjs';
 import { UserModel } from 'src/users/user.model';
+import { UserService } from 'src/users/users.service';
 
 @Injectable()
 export class IsAdmin implements CanActivate {

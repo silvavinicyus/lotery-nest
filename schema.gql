@@ -102,7 +102,7 @@ type Mutation {
   createBet(data: ICreateBetRequest!): [BetModel!]!
   deleteBet(secure_id: String!): String!
   updateCart(value: Float!): CartModel!
-  login(email: String!, password: String!): AuthType!
+  login(data: AuthenticateDTO!): AuthType!
 }
 
 input ICreateBetRequest {
@@ -113,4 +113,9 @@ input IBetInterface {
   game_id: Float!
   user_id: Float!
   numbers: String!
+}
+
+input AuthenticateDTO {
+  email: String!
+  password: String!
 }
