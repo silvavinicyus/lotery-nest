@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GameModel } from 'src/games/games.model';
-import { UserModel } from 'src/users/user.model';
-import { BetModel } from './bets.model';
-import { BetsService } from './bets.service';
-import { BetsResolver } from './bets.resolver';
-import { GamesModule } from 'src/games/games.module';
-import { UserModule } from 'src/users/users.module';
 import { CartModule } from 'src/cart/cart.module';
+import { GamesModule } from 'src/games/games.module';
+import { MailModule } from 'src/mail/mail.module';
+import { UserModule } from 'src/users/users.module';
+import { BetModel } from './bets.model';
+import { BetsResolver } from './bets.resolver';
+import { BetsService } from './bets.service';
 
 @Module({
   imports: [
@@ -15,6 +14,7 @@ import { CartModule } from 'src/cart/cart.module';
     GamesModule,
     UserModule,
     CartModule,
+    MailModule,
   ],
   providers: [BetsService, BetsResolver],
   exports: [BetsService],

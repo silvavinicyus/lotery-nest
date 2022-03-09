@@ -16,6 +16,7 @@ import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { IsAdmin } from 'src/auth/admin.guard';
 import CreateUserDTO from './dto/CreateUserDTO';
 import UpdateUserDTO from './dto/UpdateUserDTO';
+import { MailService } from 'src/mail/mail.service';
 
 @Resolver('UserModel')
 export class UsersResolver {
@@ -24,6 +25,8 @@ export class UsersResolver {
     @Inject(PermissionsService) private permissionsService: PermissionsService,
     @Inject(AuthorizationService)
     private authorizationService: AuthorizationService,
+    @Inject(MailService)
+    private mailService: MailService,
   ) {}
 
   @UseGuards(GqlAuthGuard, IsAdmin)
@@ -69,6 +72,8 @@ export class UsersResolver {
       user_id: user.id,
       permission_id: permission.id,
     });
+
+    await this.mailService.sendMailNewUser(user);
 
     return user;
   }

@@ -2,6 +2,7 @@ import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CartService } from 'src/cart/cart.service';
 import { GamesService } from 'src/games/games.service';
+import { MailService } from 'src/mail/mail.service';
 import { UserService } from 'src/users/users.service';
 import { BetModel } from './bets.model';
 import { BetsService } from './bets.service';
@@ -18,6 +19,8 @@ export class BetsResolver {
     private usersService: UserService,
     @Inject(CartService)
     private cartService: CartService,
+    @Inject(MailService)
+    private mailService: MailService,
   ) {}
 
   @Query(() => [BetModel])
@@ -63,6 +66,13 @@ export class BetsResolver {
         const betCreated = await this.betsService.create(bet);
 
         betsCreated.push(betCreated);
+
+        await this.mailService.sendNewBetMail({
+          game: gameExists.type,
+          numbers: bet.numbers,
+          user: userExists,
+          value: gameExists.price,
+        });
       }
     } else {
       throw new BadRequestException(

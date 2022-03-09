@@ -49,6 +49,13 @@ type GameModel {
   updated_at: DateTime!
 }
 
+type CartModel {
+  id: Float!
+  value: Float!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type BetModel {
   id: Float!
   secure_id: String!
@@ -59,13 +66,6 @@ type BetModel {
   updated_at: DateTime!
   user: UserModel!
   game: GameModel!
-}
-
-type CartModel {
-  id: Float!
-  value: Float!
-  created_at: DateTime!
-  updated_at: DateTime!
 }
 
 type AuthType {
