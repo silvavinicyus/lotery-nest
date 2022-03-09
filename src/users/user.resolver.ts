@@ -3,6 +3,7 @@ import {
   ConflictException,
   Inject,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserModel } from './user.model';
@@ -11,6 +12,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { hash } from 'bcrypt';
 import { PermissionsService } from 'src/permissions/permissions.service';
 import { AuthorizationService } from 'src/authorization/authorization.service';
+import { GqlAuthGuard } from 'src/auth/auth.guard';
 
 @Resolver('UserModel')
 export class UsersResolver {
@@ -21,6 +23,7 @@ export class UsersResolver {
     private authorizationService: AuthorizationService,
   ) {}
 
+  @UseGuards(GqlAuthGuard)
   @Query(() => [UserModel])
   async users(): Promise<UserModel[]> {
     const users = await this.usersService.index();
