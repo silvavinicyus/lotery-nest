@@ -14,6 +14,8 @@ import { PermissionsService } from 'src/permissions/permissions.service';
 import { AuthorizationService } from 'src/authorization/authorization.service';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { IsAdmin } from 'src/auth/admin.guard';
+import CreateUserDTO from './dto/CreateUserDTO';
+import UpdateUserDTO from './dto/UpdateUserDTO';
 
 @Resolver('UserModel')
 export class UsersResolver {
@@ -44,27 +46,22 @@ export class UsersResolver {
   }
 
   @Mutation(() => UserModel)
-  async createUser(
-    @Args('name') name: string,
-    @Args('email') email: string,
-    @Args('password') password: string,
-  ): Promise<UserModel> {
-    const userExists = await this.usersService.findByEmail(email);
+  async createUser(@Args('input') input: CreateUserDTO): Promise<UserModel> {
+    const userExists = await this.usersService.findByEmail(input.email);
 
     if (userExists) {
       throw new BadRequestException('This email is already used');
     }
 
     const secure_id = uuidV4();
-    const passwordHash = await hash(password, 10);
+    const passwordHash = await hash(input.password, 10);
 
     const user = await this.usersService.create({
-      name,
-      email,
+      name: input.name,
+      email: input.email,
       password: passwordHash,
       secure_id,
     });
-    console.log(user.id);
 
     const permission = await this.permissionsService.findByType('player');
 
@@ -90,27 +87,23 @@ export class UsersResolver {
   }
 
   @Mutation(() => UserModel)
-  async updateUser(
-    @Args('secure_id') secure_id: string,
-    @Args('email') email: string,
-    @Args('name') name: string,
-  ) {
-    const userExists = await this.usersService.findBySecureId(secure_id);
+  async updateUser(@Args('input') input: UpdateUserDTO) {
+    const userExists = await this.usersService.findBySecureId(input.secure_id);
 
     if (!userExists) {
       throw new NotFoundException('There is no user with the given id');
     }
 
-    const emailUsed = await this.usersService.findByEmail(email);
+    const emailUsed = await this.usersService.findByEmail(input.email);
 
     if (emailUsed && emailUsed.email !== userExists.email) {
       throw new ConflictException('Email already used');
     }
 
     const userUpdated = await this.usersService.update({
-      secure_id,
-      name,
-      email,
+      secure_id: input.secure_id,
+      name: input.name,
+      email: input.email,
     });
 
     return userUpdated;

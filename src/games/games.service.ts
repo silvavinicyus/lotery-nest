@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import CreateGameDTO from './dto/CreateGameDTO';
+import CreateGameServiceDTO from './dto/CreateGameServiceDTO';
 import UpdateGameDTO from './dto/UpdateGameDTO';
 import { GameModel } from './games.model';
 
@@ -20,7 +21,7 @@ export class GamesService {
     price,
     max_number,
     color,
-  }: CreateGameDTO) {
+  }: CreateGameServiceDTO) {
     const game = this.gamesRepository.create({
       secure_id,
       type,

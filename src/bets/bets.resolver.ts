@@ -65,7 +65,11 @@ export class BetsResolver {
         betsCreated.push(betCreated);
       }
     } else {
-      throw new BadRequestException(`Cart value must be minimum ${cart.value}`);
+      throw new BadRequestException(
+        `Cart value must be minimum R$ ${cart.value.toLocaleString('pt-br', {
+          minimumFractionDigits: 2,
+        })}`,
+      );
     }
 
     return betsCreated;

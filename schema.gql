@@ -91,18 +91,52 @@ type Mutation {
   createPermission(type: String!): PermissionModel!
   deletePermission(secure_id: String!): String!
   updatePermission(secure_id: String!, type: String!): PermissionModel!
-  createUser(name: String!, email: String!, password: String!): UserModel!
+  createUser(input: CreateUserDTO!): UserModel!
   deleteUser(secure_id: String!): String!
-  updateUser(secure_id: String!, email: String!, name: String!): UserModel!
-  createAuthorization(user_id: Float!, permission_id: Float!): AuthorizationModel!
+  updateUser(input: UpdateUserDTO!): UserModel!
+  createAuthorization(input: CreateAuthorizationDTO!): AuthorizationModel!
   deleteAuthorization(secure_id: String!): String!
-  createGame(type: String!, description: String!, range: Float!, price: Float!, max_number: Float!, color: String!): GameModel!
+  createGame(input: CreateGameDTO!): GameModel!
   deleteGame(secure_id: String!): String!
-  updateGame(secure_id: String!, description: String!, range: Float!, price: Float!, color: String!): GameModel!
+  updateGame(input: UpdateGameDTO!): GameModel!
   createBet(data: ICreateBetRequest!): [BetModel!]!
   deleteBet(secure_id: String!): String!
   updateCart(value: Float!): CartModel!
   login(data: AuthenticateDTO!): AuthType!
+}
+
+input CreateUserDTO {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUserDTO {
+  secure_id: String!
+  email: String!
+  name: String!
+}
+
+input CreateAuthorizationDTO {
+  user_id: Float!
+  permission_id: Float!
+}
+
+input CreateGameDTO {
+  type: String!
+  description: String!
+  range: Float!
+  price: Float!
+  max_number: Float!
+  color: String!
+}
+
+input UpdateGameDTO {
+  secure_id: String!
+  price: Float!
+  range: Float!
+  description: String!
+  color: String!
 }
 
 input ICreateBetRequest {

@@ -4,6 +4,7 @@ import { IsAdmin } from 'src/auth/admin.guard';
 import { GqlAuthGuard } from 'src/auth/auth.guard';
 import { AuthorizationModel } from './authorization.model';
 import { AuthorizationService } from './authorization.service';
+import CreateAuthorizationDTO from './dto/CreateAuthorizationDTO';
 
 @Resolver()
 export class AuthorizationResolver {
@@ -29,13 +30,10 @@ export class AuthorizationResolver {
   }
 
   @Mutation(() => AuthorizationModel)
-  async createAuthorization(
-    @Args('user_id') user_id: number,
-    @Args('permission_id') permission_id: number,
-  ) {
+  async createAuthorization(@Args('input') input: CreateAuthorizationDTO) {
     const authorization = await this.authorizationService.create({
-      user_id,
-      permission_id,
+      user_id: input.user_id,
+      permission_id: input.permission_id,
     });
 
     return authorization;
