@@ -1,6 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNumber, IsString } from 'class-validator';
-import { IsNull } from 'typeorm';
 
 @InputType()
 export default class UpdateGameDTO {
